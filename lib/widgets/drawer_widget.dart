@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../screens/breath_hold_test_screen.dart';
+import '../screens/training_screen.dart';
+import '../screens/settings_screen.dart';
+
 class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,24 +16,48 @@ class DrawerWidget extends StatelessWidget {
               automaticallyImplyLeading: false,
             ),
             Divider(),
-            ListTile(
-              title: Text('Training'),
-              leading: Icon(Icons.train),
-              onTap: () {},
+            DrawerItem(
+              title: 'Apnea Training',
+              icon: Icon(Icons.train),
+              targetRoute: TrainingScreen.routeName,
             ),
-            ListTile(
-              title: Text('Breath Hold Test'),
-              leading: Icon(Icons.tag_faces),
-              onTap: () {},
+            DrawerItem(
+              title: 'Breath Hold Test',
+              icon: Icon(Icons.tag_faces),
+              targetRoute: BreathHoldTestScreen.routeName,
             ),
-            ListTile(
-              title: Text('Training'),
-              leading: Icon(Icons.settings),
-              onTap: () {},
+            DrawerItem(
+              title: 'Settings',
+              icon: Icon(Icons.settings),
+              targetRoute: SettingsScreen.routeName,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  final String title;
+  final Icon icon;
+  final String targetRoute;
+
+  DrawerItem({
+    @required this.title,
+    @required this.icon,
+    @required this.targetRoute,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 18),
+      ),
+      leading: icon,
+      onTap: () => Navigator.of(context).pushReplacementNamed(targetRoute),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:apnea/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class TrainingScreen extends StatelessWidget {
+  static const routeName = '/training';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

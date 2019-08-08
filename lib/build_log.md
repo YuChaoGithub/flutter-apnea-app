@@ -10,3 +10,6 @@
 ## 2019.08.07
 * Started the project, created the overall file structures.
 * Laid out the Training Screen.
+
+## 2018.08.08
+* Completed the layout and navigation of Training Screen, Breath Hold Test Screen, Breath Hold Test History Screen, and Settings Screen.
