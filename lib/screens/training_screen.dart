@@ -1,6 +1,9 @@
 import 'package:apnea/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
+import './customize_tables_screen.dart';
+import './training_history_screen.dart';
+
 class TrainingScreen extends StatelessWidget {
   static const routeName = '/training';
 
@@ -18,11 +21,15 @@ class TrainingScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(CustomizeTableScreen.routeName);
+            },
           ),
           IconButton(
             icon: Icon(Icons.history),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(TrainingHistoryScreen.routeName);
+            },
           ),
         ],
       ),
