@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/minute_second.dart';
 import '../widgets/timer_widget.dart';
 import '../widgets/drawer_widget.dart';
 import './breath_hold_test_history_screen.dart';
@@ -57,7 +58,7 @@ class BreathHoldTestScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            TimerWidget(),
+            TimerWidget(MinuteSecond(minute: 9, second: 5)),
             SizedBox(height: 20),
             Container(
               height: 70,

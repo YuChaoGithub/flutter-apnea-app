@@ -1,8 +1,7 @@
 # Todo
-* Complete the widgets.
-* Data models.
 * Prototyping functionalities.
 * Styling and customize icons.
+* Dark mode.
 
 # Build Log
 ## 2019.08.07
@@ -16,3 +15,4 @@
 ## 2018.08.09
 * Completed widgets: Progress Bar, Training Table, Timer.
 * Added Dropdown Button.
+* Added data models.

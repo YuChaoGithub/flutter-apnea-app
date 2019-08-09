@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/minute_second.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/timer_widget.dart';
 import '../widgets/drawer_widget.dart';
@@ -71,7 +72,7 @@ class TrainingScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            TimerWidget(),
+            TimerWidget(MinuteSecond(minute: 3, second: 3)),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text('Contraction starts at 2:30'),

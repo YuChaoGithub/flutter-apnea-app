@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../models/minute_second.dart';
+
 class TimerWidget extends StatelessWidget {
+  final MinuteSecond currTime;
+
+  TimerWidget(this.currTime);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +19,7 @@ class TimerWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            '2:30',
+            currTime.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 50),
           ),
