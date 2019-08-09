@@ -1,7 +1,5 @@
 # Todo
-* Complete the overall layout of all the screens.
 * Complete the widgets.
-* Hook up the transitions.
 * Data models.
 * Prototyping functionalities.
 * Styling and customize icons.
@@ -13,3 +11,8 @@
 
 ## 2018.08.08
 * Completed the layouts of all screens.
+* Completed Drawer Widget.
+
+## 2018.08.09
+* Completed widgets: Progress Bar, Training Table, Timer.
+* Added Dropdown Button.

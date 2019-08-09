@@ -1,6 +1,8 @@
-import 'package:apnea/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/progress_bar.dart';
+import '../widgets/timer_widget.dart';
+import '../widgets/drawer_widget.dart';
 import './customize_tables_screen.dart';
 import './training_history_screen.dart';
 
@@ -37,6 +39,7 @@ class TrainingScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: 20),
             Text(
@@ -68,19 +71,13 @@ class TrainingScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            Container(
-              width: 180,
-              height: 80,
-              child: Card(
-                elevation: 5,
-              ),
+            TimerWidget(),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text('Contraction starts at 2:30'),
             ),
-            SizedBox(height: 20),
-            Container(
-              width: 300,
-              height: 10,
-              color: Colors.blue,
-            ),
+            SizedBox(height: 10),
+            ProgressBar(),
             SizedBox(height: 20),
             Container(
               height: 70,
@@ -91,18 +88,68 @@ class TrainingScreen extends StatelessWidget {
                 onPressed: () {},
               ),
             ),
+            SizedBox(height: 5),
+            DropdownButton(
+              items: [
+                DropdownMenuItem(child: Text('Table 1')),
+              ],
+              onChanged: (val) {},
+            ),
             SizedBox(height: 10),
-            Card(
-              child: Text('Dropdown Menu'),
-            ),
-            SizedBox(height: 20),
-            Container(
-              color: Colors.red,
-              width: 275,
-              height: 300,
-            ),
+            TrainingTableWidget(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TrainingTableWidget extends StatelessWidget {
+  TableRow _buildTableRow(String index, String holdTime, String breatheTime,
+      {bool isTitle = false}) {
+    return TableRow(
+      decoration: isTitle
+          ? BoxDecoration(border: Border(bottom: BorderSide(width: 1)))
+          : BoxDecoration(),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3.0),
+          child: Text(index,
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3.0),
+          child: Text(holdTime,
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3.0),
+          child: Text(breatheTime,
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      height: 300,
+      child: Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.top,
+        columnWidths: {
+          0: FractionColumnWidth(0.15),
+        },
+        children: <TableRow>[
+          _buildTableRow('#', 'Hold', 'Breathe', isTitle: true),
+          _buildTableRow('1', '3:32', '5:58'),
+          _buildTableRow('2', '3:32', '5:58'),
+          _buildTableRow('3', '3:32', '5:58'),
+          _buildTableRow('4', '3:32', '5:58'),
+          _buildTableRow('5', '3:32', '5:58'),
+          _buildTableRow('6', '3:32', '5:58'),
+        ],
       ),
     );
   }

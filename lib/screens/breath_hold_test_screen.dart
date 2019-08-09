@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/timer_widget.dart';
 import '../widgets/drawer_widget.dart';
 import './breath_hold_test_history_screen.dart';
 
@@ -56,13 +57,7 @@ class BreathHoldTestScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            Container(
-              width: 180,
-              height: 80,
-              child: Card(
-                elevation: 5,
-              ),
-            ),
+            TimerWidget(),
             SizedBox(height: 20),
             Container(
               height: 70,
@@ -77,13 +72,7 @@ class BreathHoldTestScreen extends StatelessWidget {
             Container(
               width: 275,
               height: 300,
-              child: Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                color: Colors.yellow,
-              ),
+              child: Text('Instructions:\n1. Hold Hold Hold do the Hold Hold Hold.\n2. OK.'),
             ),
             SizedBox(height: 30),
           ],
