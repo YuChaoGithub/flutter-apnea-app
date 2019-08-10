@@ -15,7 +15,10 @@ class BreathHoldTestScreen extends StatelessWidget {
         title: const Text('Breath Hold Test'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.history),
+            icon: Image.asset(
+              'assets/icons/history.png',
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
             onPressed: () {
               Navigator.of(context)
                   .pushNamed(BreathHoldTestHistoryScreen.routeName);
@@ -73,7 +76,8 @@ class BreathHoldTestScreen extends StatelessWidget {
             Container(
               width: 275,
               height: 300,
-              child: Text('Instructions:\n1. Hold Hold Hold do the Hold Hold Hold.\n2. OK.'),
+              child: Text(
+                  'Instructions:\n1. Hold Hold Hold do the Hold Hold Hold.\n2. OK.'),
             ),
             SizedBox(height: 30),
           ],

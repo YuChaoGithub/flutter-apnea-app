@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Apnea',
+      // theme: ThemeData.dark(),
       home: TrainingScreen(),
       routes: {
         TrainingScreen.routeName: (ctx) => TrainingScreen(),

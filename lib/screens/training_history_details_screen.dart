@@ -10,7 +10,10 @@ class TrainingHistoryDetailsScreen extends StatelessWidget {
         title: Text(''),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.share),
+            icon: Image.asset(
+              'asset/icons/share.png',
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
             onPressed: () {},
           ),
         ],

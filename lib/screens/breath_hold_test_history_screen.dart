@@ -10,7 +10,10 @@ class BreathHoldTestHistoryScreen extends StatelessWidget {
         title: const Text('History'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.share),
+            icon: Image.asset(
+              'assets/icons/share.png',
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
             onPressed: () {},
           ),
         ],

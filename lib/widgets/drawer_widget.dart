@@ -18,17 +18,29 @@ class DrawerWidget extends StatelessWidget {
             Divider(),
             DrawerItem(
               title: 'Apnea Training',
-              icon: Icon(Icons.train),
+              icon: Image.asset(
+                'assets/icons/lungs.png',
+                color: Theme.of(context).iconTheme.color,
+                scale: 20.0,
+              ),
               targetRoute: TrainingScreen.routeName,
             ),
             DrawerItem(
               title: 'Breath Hold Test',
-              icon: Icon(Icons.tag_faces),
+              icon: Image.asset(
+                'assets/icons/breath_holding.png',
+                color: Theme.of(context).iconTheme.color,
+                scale: 20.0,
+              ),
               targetRoute: BreathHoldTestScreen.routeName,
             ),
             DrawerItem(
               title: 'Settings',
-              icon: Icon(Icons.settings),
+              icon: Image.asset(
+                'assets/icons/settings.png',
+                color: Theme.of(context).iconTheme.color,
+                scale: 20.0,
+              ),
               targetRoute: SettingsScreen.routeName,
             ),
           ],
@@ -40,7 +52,7 @@ class DrawerWidget extends StatelessWidget {
 
 class DrawerItem extends StatelessWidget {
   final String title;
-  final Icon icon;
+  final Widget icon;
   final String targetRoute;
 
   DrawerItem({

@@ -23,13 +23,13 @@ class TrainingScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Image.asset('assets/icons/settings.png', color: Theme.of(context).primaryIconTheme.color),
             onPressed: () {
               Navigator.of(context).pushNamed(CustomizeTableScreen.routeName);
             },
           ),
           IconButton(
-            icon: Icon(Icons.history),
+            icon: Image.asset('assets/icons/history.png', color: Theme.of(context).primaryIconTheme.color),
             onPressed: () {
               Navigator.of(context).pushNamed(TrainingHistoryScreen.routeName);
             },
@@ -53,10 +53,10 @@ class TrainingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.speaker),
+                  icon: Image.asset('assets/icons/lungs.png', color: Theme.of(context).iconTheme.color),
                   onPressed: () {},
                 ),
-                SizedBox(width: 30),
+                SizedBox(width: 25),
                 Container(
                   width: 70,
                   height: 70,
@@ -107,10 +107,10 @@ class TrainingScreen extends StatelessWidget {
 
 class TrainingTableWidget extends StatelessWidget {
   TableRow _buildTableRow(String index, String holdTime, String breatheTime,
-      {bool isTitle = false}) {
+      {bool isTitle = false, BuildContext context}) {
     return TableRow(
       decoration: isTitle
-          ? BoxDecoration(border: Border(bottom: BorderSide(width: 1)))
+          ? BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).textTheme.body1.color)))
           : BoxDecoration(),
       children: <Widget>[
         Padding(
@@ -143,7 +143,7 @@ class TrainingTableWidget extends StatelessWidget {
           0: FractionColumnWidth(0.15),
         },
         children: <TableRow>[
-          _buildTableRow('#', 'Hold', 'Breathe', isTitle: true),
+          _buildTableRow('#', 'Hold', 'Breathe', isTitle: true, context: context),
           _buildTableRow('1', '3:32', '5:58'),
           _buildTableRow('2', '3:32', '5:58'),
           _buildTableRow('3', '3:32', '5:58'),

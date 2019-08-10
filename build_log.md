@@ -16,3 +16,6 @@
 * Completed widgets: Progress Bar, Training Table, Timer.
 * Added Dropdown Button.
 * Added data models.
+
+## 202018.08.10
+* Added some custom icons as well as theming.
