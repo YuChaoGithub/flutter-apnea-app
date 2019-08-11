@@ -2,6 +2,27 @@ import 'package:flutter/material.dart';
 
 class TrainingTableDetailScreen extends StatelessWidget {
   static const routeName = '/training-table-detail';
+  static const durationSelections = [
+    '0:30',
+    '0:45',
+    '1:00',
+    '1:15',
+    '1:30',
+    '1:45',
+    '2:00',
+    '2:15',
+    '2:30',
+    '2:45',
+    '3:00',
+    '3:15',
+    '3:30',
+    '3:45',
+    '4:00',
+    '4:15',
+    '4:30',
+    '4:45',
+    '5:00',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -9,13 +30,54 @@ class TrainingTableDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(''),
         leading: IconButton(
-          icon: Icon(Icons.delete),
+          icon: Image.asset(
+            'assets/icons/back.png',
+            color: Theme.of(context).iconTheme.color,
+          ),
           color: Theme.of(context).errorColor,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  title: const Text('Alert'),
+                  content: const Text('Exit without saving?'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        'Continue Editing',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.button.color,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(
+                        'Sure',
+                        style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.save),
+            icon: Image.asset(
+              'assets/icons/check.png',
+              color: Theme.of(context).iconTheme.color,
+            ),
             onPressed: () {},
           ),
         ],
@@ -122,14 +184,21 @@ class DurationDropDownMenu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: DropdownButton(
-        items: [
-          DropdownMenuItem(
-            child: Text(
-              '2:30',
-            ),
-          )
-        ],
+        items: TrainingTableDetailScreen.durationSelections.map((val) {
+          return DropdownMenuItem(child: Text(val));
+        }).toList(),
         onChanged: (val) {},
+        underline: Container(
+          height: 1.0,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).textTheme.title.color,
+                width: 1.0,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

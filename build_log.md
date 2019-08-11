@@ -1,6 +1,6 @@
 # Todo
-* Prototyping functionalities.
-* Styling and customize icons.
+* Database setup.
+* Prototyping functionalities (hook up the providers/consumers).
 * Dark mode.
 
 # Build Log
@@ -17,5 +17,10 @@
 * Added Dropdown Button.
 * Added data models.
 
-## 202018.08.10
+## 2018.08.10
 * Added some custom icons as well as theming.
+
+## 2018.08.11
+* Added custom fonts.
+* Added custom icons.
+* Completed theming.

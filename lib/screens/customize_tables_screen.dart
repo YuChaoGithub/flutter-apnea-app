@@ -9,10 +9,22 @@ class CustomizeTableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset(
+            'assets/icons/back.png',
+            color: Theme.of(context).primaryIconTheme.color,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: const Text('Training Tables'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Image.asset(
+              'assets/icons/add.png',
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
             onPressed: () {
               Navigator.of(context)
                   .pushNamed(TrainingTableDetailScreen.routeName);

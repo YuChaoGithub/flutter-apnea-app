@@ -8,6 +8,13 @@ class TrainingHistoryDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
+        leading: IconButton(
+          icon: Image.asset(
+            'assets/icons/back.png',
+            color: Theme.of(context).primaryIconTheme.color,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Image.asset(

@@ -11,8 +11,8 @@ class ProgressBar extends StatelessWidget {
         maxValue: 100,
         direction: Axis.horizontal,
         size: 10,
-        progressColor: Colors.blue,
-        backgroundColor: Colors.black26,
+        progressColor: Theme.of(context).textTheme.title.color,
+        backgroundColor: Colors.black12,
       ),
     );
   }

@@ -23,13 +23,15 @@ class TrainingScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Image.asset('assets/icons/settings.png', color: Theme.of(context).primaryIconTheme.color),
+            icon: Image.asset('assets/icons/settings.png',
+                color: Theme.of(context).primaryIconTheme.color),
             onPressed: () {
               Navigator.of(context).pushNamed(CustomizeTableScreen.routeName);
             },
           ),
           IconButton(
-            icon: Image.asset('assets/icons/history.png', color: Theme.of(context).primaryIconTheme.color),
+            icon: Image.asset('assets/icons/history.png',
+                color: Theme.of(context).primaryIconTheme.color),
             onPressed: () {
               Navigator.of(context).pushNamed(TrainingHistoryScreen.routeName);
             },
@@ -53,7 +55,10 @@ class TrainingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 IconButton(
-                  icon: Image.asset('assets/icons/lungs.png', color: Theme.of(context).iconTheme.color),
+                  icon: Image.asset(
+                    'assets/icons/lungs.png',
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onPressed: () {},
                 ),
                 SizedBox(width: 25),
@@ -66,7 +71,10 @@ class TrainingScreen extends StatelessWidget {
                 ),
                 SizedBox(width: 30),
                 IconButton(
-                  icon: Icon(Icons.storage),
+                  icon: Image.asset(
+                    'assets/icons/inspire.png',
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onPressed: () {},
                 ),
               ],
@@ -75,7 +83,7 @@ class TrainingScreen extends StatelessWidget {
             TimerWidget(MinuteSecond(minute: 3, second: 3)),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text('Contraction starts at 2:30'),
+              child: Text('Contraction started at 2:30'),
             ),
             SizedBox(height: 10),
             ProgressBar(),
@@ -84,19 +92,40 @@ class TrainingScreen extends StatelessWidget {
               height: 70,
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
-                shape: CircleBorder(),
-                child: Icon(Icons.play_arrow),
+                shape: CircleBorder(
+                  side: BorderSide(
+                    width: 2,
+                    color: Theme.of(context).textTheme.button.color,
+                  ),
+                ),
+                color: Colors.white,
+                child: Image.asset(
+                  'assets/icons/play.png',
+                  scale: 15,
+                  color: Theme.of(context).iconTheme.color,
+                ),
                 onPressed: () {},
               ),
             ),
             SizedBox(height: 5),
             DropdownButton(
+              underline: Container(
+                height: 1.0,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).textTheme.title.color,
+                      width: 1.2,
+                    ),
+                  ),
+                ),
+              ),
               items: [
                 DropdownMenuItem(child: Text('Table 1')),
               ],
               onChanged: (val) {},
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             TrainingTableWidget(),
           ],
         ),
@@ -110,7 +139,11 @@ class TrainingTableWidget extends StatelessWidget {
       {bool isTitle = false, BuildContext context}) {
     return TableRow(
       decoration: isTitle
-          ? BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).textTheme.body1.color)))
+          ? BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      width: 1,
+                      color: Theme.of(context).textTheme.body1.color)))
           : BoxDecoration(),
       children: <Widget>[
         Padding(
@@ -143,7 +176,8 @@ class TrainingTableWidget extends StatelessWidget {
           0: FractionColumnWidth(0.15),
         },
         children: <TableRow>[
-          _buildTableRow('#', 'Hold', 'Breathe', isTitle: true, context: context),
+          _buildTableRow('#', 'Hold', 'Breathe',
+              isTitle: true, context: context),
           _buildTableRow('1', '3:32', '5:58'),
           _buildTableRow('2', '3:32', '5:58'),
           _buildTableRow('3', '3:32', '5:58'),

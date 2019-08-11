@@ -15,13 +15,20 @@ class TimerWidget extends StatelessWidget {
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).textTheme.button.color,
+            width: 5,
+          ),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Center(
           child: Text(
             currTime.toString(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 50),
+            style: TextStyle(
+              fontSize: 50,
+              fontFamily: 'Exo',
+            ),
           ),
         ),
       ),

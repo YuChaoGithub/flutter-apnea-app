@@ -16,16 +16,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Apnea',
-      // theme: ThemeData.dark(),
+      theme: ThemeData(
+        fontFamily: 'Short Stack',
+        primaryColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          color: Colors.white60,
+          elevation: 10,
+          textTheme: TextTheme().copyWith(
+            title: TextStyle(
+              color: Theme.of(context).textTheme.button.color,
+              fontFamily: 'Delius Unicase',
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
       home: TrainingScreen(),
       routes: {
         TrainingScreen.routeName: (ctx) => TrainingScreen(),
         BreathHoldTestScreen.routeName: (ctx) => BreathHoldTestScreen(),
         SettingsScreen.routeName: (ctx) => SettingsScreen(),
-        BreathHoldTestHistoryScreen.routeName: (ctx) => BreathHoldTestHistoryScreen(),
+        BreathHoldTestHistoryScreen.routeName: (ctx) =>
+            BreathHoldTestHistoryScreen(),
         CustomizeTableScreen.routeName: (ctx) => CustomizeTableScreen(),
-        TrainingTableDetailScreen.routeName: (ctx) => TrainingTableDetailScreen(),
-        TrainingHistoryDetailsScreen.routeName: (ctx) => TrainingHistoryDetailsScreen(),
+        TrainingTableDetailScreen.routeName: (ctx) =>
+            TrainingTableDetailScreen(),
+        TrainingHistoryDetailsScreen.routeName: (ctx) =>
+            TrainingHistoryDetailsScreen(),
         TrainingHistoryScreen.routeName: (ctx) => TrainingHistoryScreen(),
       },
     );
