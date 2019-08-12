@@ -1,15 +1,17 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import './training_table.dart';
 import './minute_second.dart';
 
 class TrainingHistoryData {
+  final UniqueKey key;
   final TrainingTable table;
   final MinuteSecond firstContraction;
   final DateTime trainingDateTime;
   final String description;
 
   TrainingHistoryData({
+    @required this.key,
     @required this.table,
     @required this.firstContraction,
     @required this.trainingDateTime,

@@ -26,7 +26,7 @@ class TimerWidget extends StatelessWidget {
             currTime.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 50,
+              fontSize: 40,
               fontFamily: 'Exo',
             ),
           ),

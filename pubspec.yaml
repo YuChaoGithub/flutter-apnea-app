@@ -14,7 +14,7 @@ description: An apnea training app.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -36,10 +36,6 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: Short Stack
-      fonts:
-        - asset: assets/fonts/short_stack/ShortStack.ttf
-
     - family: Exo
       fonts:
         - asset: assets/fonts/exo/Exo.ttf
@@ -48,4 +44,10 @@ flutter:
       fonts:
         - asset: assets/fonts/delius_unicase/DeliusUnicase-Regular.ttf
         - asset: assets/fonts/delius_unicase/DeliusUnicase-Bold.ttf
+          weight: 700
+    
+    - family: Libre Baskerville
+      fonts:
+        - asset: assets/fonts/libre_baskerville/LibreBaskerville-Regular.ttf
+        - asset: assets/fonts/libre_baskerville/LibreBaskerville-Bold.ttf
           weight: 700

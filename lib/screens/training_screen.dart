@@ -61,7 +61,7 @@ class TrainingScreen extends StatelessWidget {
                   ),
                   onPressed: () {},
                 ),
-                SizedBox(width: 25),
+                SizedBox(width: 30),
                 Container(
                   width: 70,
                   height: 70,

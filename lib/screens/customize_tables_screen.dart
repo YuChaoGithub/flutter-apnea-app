@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './training_table_detail_screen.dart';
+import '../providers/training_table_provider.dart';
 
 class CustomizeTableScreen extends StatelessWidget {
   static const routeName = '/customize-table';
@@ -32,8 +34,28 @@ class CustomizeTableScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[],
+      body: Consumer<TrainingTableProvider>(
+        builder: (ctx, provider, ch) {
+          return ListView(
+            children: List<Column>.generate(provider.tablesLength, (i) {
+              final table = provider.tables[i];
+              return Column(
+                children: <Widget>[
+                  ListTile(
+                    key: table.key,
+                    title: Text(table.name, textAlign: TextAlign.center),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                          TrainingTableDetailScreen.routeName,
+                          arguments: table.key);
+                    },
+                  ),
+                  Divider(),
+                ],
+              );
+            }),
+          );
+        },
       ),
     );
   }

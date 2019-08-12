@@ -1,14 +1,16 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import './minute_second.dart';
 
-class BreathHoldHistory {
+class BreathHoldHistoryData {
+  final UniqueKey key;
   final MinuteSecond holdDuration;
   final MinuteSecond firstContraction;
   final DateTime testDateTime;
   final String description;
 
-  BreathHoldHistory({
+  BreathHoldHistoryData({
+    @required this.key,
     @required this.holdDuration,
     @required this.firstContraction,
     @required this.testDateTime,

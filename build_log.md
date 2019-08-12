@@ -1,7 +1,14 @@
 # Todo
+* Configure the ListTiles in Customize Tables Screen.
 * Database setup.
+* Training Main Screen.
+* Training History.
+* Breath Hold Test.
+* Breath Hold Test History.
 * Prototyping functionalities (hook up the providers/consumers).
 * Dark mode.
+* Animations.
+* Google Admobs.
 
 # Build Log
 ## 2019.08.07
@@ -24,3 +31,9 @@
 * Added custom fonts.
 * Added custom icons.
 * Completed theming.
+
+## 2018.08.12
+* Breath Hold Table Detail Screen state handled.
+
+## 2018.08.13
+* Hooked up the saving/editing functionality of Customize Table Screen with providers.

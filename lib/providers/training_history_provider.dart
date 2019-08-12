@@ -1,3 +1,11 @@
 import 'package:flutter/foundation.dart';
 
-class TrainingHistoryProvider with ChangeNotifier {}
+import '../models/training_history_data.dart';
+
+class TrainingHistoryProvider with ChangeNotifier {
+  List<TrainingHistoryData> _histories = [];
+
+  List<TrainingHistoryData> get histories {
+    return [..._histories];
+  }
+}

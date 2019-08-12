@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import './minute_second.dart';
 
@@ -15,5 +16,8 @@ class TrainingTableEntry {
 }
 
 class TrainingTable {
+  UniqueKey key;
+  String name = '';
+  String description = '';
   List<TrainingTableEntry> table = [];
 }
