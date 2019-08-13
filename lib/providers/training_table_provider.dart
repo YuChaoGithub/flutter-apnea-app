@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/minute_second.dart';
+import '../db_helper.dart';
 import '../models/training_table.dart';
 
 class TrainingTableProvider with ChangeNotifier {
@@ -14,24 +16,70 @@ class TrainingTableProvider with ChangeNotifier {
   }
 
   void addTable(TrainingTable table) {
-    table.key = UniqueKey();
+    if (table.key == '') {
+      table.key = UniqueKey().toString();
+    }
+    print(table.key);
     _tables.add(table);
-    print(table.table[0].breatheTime);
+    notifyListeners();
+    DBHelper.insert('training_table', {
+      'uniqueKey': table.key,
+      'name': table.name,
+      'description': table.description,
+    });
+    for (int i = 0; i < table.table.length; i++) {
+      DBHelper.insert('training_table_entry', {
+        'trainingTableKey': table.key,
+        'rowIndex': i,
+        'holdTime': table.table[i].holdTime.toString(),
+        'breatheTime': table.table[i].breatheTime.toString(),
+      });
+    }
+  }
+
+  Future<void> fetchAndSetTable() async {
+    _tables = [];
+    final tableList = await DBHelper.getData('training_table');
+    for (int i = 0; i < tableList.length; i++) {
+      TrainingTable currTable = TrainingTable();
+      currTable.key = tableList[i]['uniqueKey'];
+      print(currTable.key);
+      currTable.name = tableList[i]['name'];
+      currTable.description = tableList[i]['description'];
+
+      final entryList = await DBHelper.getTableEntries(currTable.key);
+      for (int row = 0; row < entryList.length; row++) {
+        final holdTime = MinuteSecond.fromString(entryList[row]['holdTime']);
+        final breatheTime =
+            MinuteSecond.fromString(entryList[row]['breatheTime']);
+        currTable.table.add(
+          TrainingTableEntry(
+            index: row,
+            holdTime: holdTime,
+            breatheTime: breatheTime,
+          ),
+        );
+      }
+      _tables.add(currTable);
+      _tables.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
+    }
     notifyListeners();
   }
 
-  void deleteTable(UniqueKey key) {
+  void deleteTable(String key) async {
+    await DBHelper.delete('training_table_entry', 'trainingTableKey', key);
+    await DBHelper.delete('training_table', 'uniqueKey', key);
     _tables.removeWhere((table) => table.key == key);
     notifyListeners();
   }
 
-  void updateTable(UniqueKey key, TrainingTable table) {
-    final tableIndex = _tables.indexWhere((t) => t.key == key);
-    _tables[tableIndex] = table;
-    notifyListeners();
-  }
+  // void updateTable(String key, TrainingTable table) {
+  //   final tableIndex = _tables.indexWhere((t) => t.key == key);
+  //   _tables[tableIndex] = table;
+  //   notifyListeners();
+  // }
 
-  TrainingTable getTable(UniqueKey key) {
+  TrainingTable getTable(String key) {
     return _tables.firstWhere((t) => t.key == key);
   }
 }

@@ -34,7 +34,7 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final tableKey = ModalRoute.of(context).settings.arguments as UniqueKey;
+      final tableKey = ModalRoute.of(context).settings.arguments as String;
       if (tableKey != null) {
         _editedForm = Provider.of<TrainingTableProvider>(context, listen: false)
             .getTable(tableKey);
@@ -49,13 +49,15 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
     final isValid = _form.currentState.validate();
     if (!isValid) return;
     _form.currentState.save();
-    if (_editedForm.key != null) {
-      Provider.of<TrainingTableProvider>(context, listen: false)
-          .updateTable(_editedForm.key, _editedForm);
-    } else {
-      Provider.of<TrainingTableProvider>(context, listen: false)
-          .addTable(_editedForm);
-    }
+    // if (_editedForm.key != null) {
+    //   Provider.of<TrainingTableProvider>(context, listen: false)
+    //       .updateTable(_editedForm.key, _editedForm);
+    // } else {
+    //   Provider.of<TrainingTableProvider>(context, listen: false)
+    //       .addTable(_editedForm);
+    // }
+    Provider.of<TrainingTableProvider>(context, listen: false)
+        .addTable(_editedForm);
     Navigator.of(context).pop();
   }
 
@@ -147,6 +149,8 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
                 ),
                 child: TextFormField(
                     initialValue: _editedForm.name,
+                    maxLength: 30,
+                    maxLengthEnforced: true,
                     decoration: InputDecoration(
                       labelText: 'Training Session Name',
                     ),
@@ -171,7 +175,9 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
                   decoration: InputDecoration(
                     labelText: 'Description',
                   ),
-                  maxLines: 5,
+                  maxLines: 3,
+                  maxLength: 75,
+                  maxLengthEnforced: true,
                   onSaved: (value) {
                     _editedForm.description = value;
                   },

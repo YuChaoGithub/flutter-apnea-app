@@ -1,7 +1,8 @@
 # Todo
+* Training Table deletion.
 * Configure the ListTiles in Customize Tables Screen.
-* Database setup.
 * Training Main Screen.
+* Separate the training history table entry TABLE in the database from the customized training TABLE.
 * Training History.
 * Breath Hold Test.
 * Breath Hold Test History.
@@ -37,3 +38,5 @@
 
 ## 2018.08.13
 * Hooked up the saving/editing functionality of Customize Table Screen with providers.
+* Set up database.
+* Hooked up the database with Customize Table Screen functionalities.

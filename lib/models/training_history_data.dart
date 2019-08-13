@@ -4,7 +4,7 @@ import './training_table.dart';
 import './minute_second.dart';
 
 class TrainingHistoryData {
-  final UniqueKey key;
+  final String key;
   final TrainingTable table;
   final MinuteSecond firstContraction;
   final DateTime trainingDateTime;

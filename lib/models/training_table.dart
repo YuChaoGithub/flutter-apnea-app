@@ -16,7 +16,7 @@ class TrainingTableEntry {
 }
 
 class TrainingTable {
-  UniqueKey key;
+  String key = '';
   String name = '';
   String description = '';
   List<TrainingTableEntry> table = [];

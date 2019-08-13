@@ -34,39 +34,106 @@ class CustomizeTableScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<TrainingTableProvider>(
-        builder: (ctx, provider, ch) {
-          return ListView(
-            children: List<Column>.generate(provider.tablesLength, (i) {
-              final table = provider.tables[i];
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    key: table.key,
-                    title: Text(table.name, textAlign: TextAlign.center),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                          TrainingTableDetailScreen.routeName,
-                          arguments: table.key);
-                    },
-                  ),
-                  Divider(),
-                ],
-              );
-            }),
-          );
-        },
+      body: FutureBuilder(
+        future: Provider.of<TrainingTableProvider>(context, listen: false)
+            .fetchAndSetTable(),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<TrainingTableProvider>(
+                builder: (ctx, provider, ch) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: ListView(
+                      children:
+                          List<Column>.generate(provider.tablesLength, (i) {
+                        final table = provider.tables[i];
+                        return Column(
+                          children: <Widget>[
+                            Dismissible(
+                              key: Key(table.key),
+                              background: Container(
+                                color: Theme.of(context).errorColor,
+                                child: Image.asset(
+                                  'assets/icons/delete.png',
+                                  scale: 20,
+                                ),
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 20),
+                              ),
+                              direction: DismissDirection.endToStart,
+                              confirmDismiss: (direction) {
+                                return showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Alert',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700)),
+                                    content: const Text(
+                                        'Sure you want to delete this?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('Don\'t Delete',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .button
+                                                    .color)),
+                                        onPressed: () =>
+                                            Navigator.of(ctx).pop(false),
+                                      ),
+                                      FlatButton(
+                                        child: Text('Sure',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .errorColor)),
+                                        onPressed: () =>
+                                            Navigator.of(ctx).pop(true),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              onDismissed: (direction) =>
+                                  provider.deleteTable(table.key),
+                              child: ListTile(
+                                key: Key(table.key),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      table.name,
+                                      style: const TextStyle(
+                                        fontFamily: 'Exo',
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      table.description,
+                                      style: const TextStyle(fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    TrainingTableDetailScreen.routeName,
+                                    arguments: table.key,
+                                  );
+                                },
+                              ),
+                            ),
+                            Divider(),
+                          ],
+                        );
+                      }),
+                    ),
+                  );
+                },
+              ),
       ),
-    );
-  }
-}
-
-class TableListItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('temp'),
-      onTap: () {},
     );
   }
 }
