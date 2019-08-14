@@ -1,14 +1,68 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/training_table.dart';
 import '../models/minute_second.dart';
 import '../widgets/progress_bar.dart';
-import '../widgets/timer_widget.dart';
+import '../widgets/timer_view_widget.dart';
 import '../widgets/drawer_widget.dart';
 import './customize_tables_screen.dart';
 import './training_history_screen.dart';
+import '../providers/training_table_provider.dart';
 
-class TrainingScreen extends StatelessWidget {
+class TrainingScreen extends StatefulWidget {
   static const routeName = '/training';
+
+  @override
+  _TrainingScreenState createState() => _TrainingScreenState();
+}
+
+class _TrainingScreenState extends State<TrainingScreen> {
+  static const _timerDelay = Duration(microseconds: 1);
+
+  TrainingTable _currTable;
+  Timer _timer;
+  Stopwatch _stopwatch = Stopwatch();
+  Duration _stopwatchGoal;
+  MinuteSecond _timeLeft;
+  Function _stopwatchCompletion;
+
+  void _update() {
+    if (_stopwatch.isRunning) {
+      if (_stopwatch.elapsed > _stopwatchGoal) {
+        _stopwatch
+          ..stop()
+          ..reset();
+        _stopwatchCompletion();
+
+        setState(() => _timeLeft = MinuteSecond(minute: 0, second: 0));
+      } else {
+        setState(() {
+          _timeLeft =
+              MinuteSecond.fromDuration(_stopwatchGoal - _stopwatch.elapsed);
+        });
+      }
+    }
+  }
+
+  void complete() {
+    print('COMPLETE!!!');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(_timerDelay, (Timer t) => _update());
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +134,7 @@ class TrainingScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            TimerWidget(MinuteSecond(minute: 3, second: 3)),
+            TimerViewWidget(_timeLeft),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text('Contraction started at 2:30'),
@@ -104,29 +158,54 @@ class TrainingScreen extends StatelessWidget {
                   scale: 15,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (!_stopwatch.isRunning) {
+                    _stopwatchGoal = Duration(minutes: 1);
+                    _stopwatch.start();
+                  }
+                },
               ),
             ),
             SizedBox(height: 5),
-            DropdownButton(
-              underline: Container(
-                height: 1.0,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).textTheme.title.color,
-                      width: 1.2,
+            Consumer<TrainingTableProvider>(
+              builder: (ctx, provider, ch) {
+                return DropdownButton(
+                  value: _currTable == null ? null : _currTable.key,
+                  underline: Container(
+                    height: 1.0,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).textTheme.title.color,
+                          width: 1.2,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              items: [
-                DropdownMenuItem(child: Text('Table 1')),
-              ],
-              onChanged: (val) {},
+                  items: [
+                    DropdownMenuItem(
+                      value: null,
+                      child: const Text('Default Training'),
+                    ),
+                    ...List<DropdownMenuItem>.generate(
+                      provider.tables.length,
+                      (i) {
+                        final table = provider.tables[i];
+                        return DropdownMenuItem(
+                          child: Text(table.name),
+                          value: table.key,
+                        );
+                      },
+                    ).toList()
+                  ],
+                  onChanged: (val) {
+                    setState(() => _currTable = provider.getTable(val));
+                  },
+                );
+              },
             ),
             SizedBox(height: 20),
-            TrainingTableWidget(),
+            TrainingTableWidget(_currTable),
           ],
         ),
       ),
@@ -135,6 +214,16 @@ class TrainingScreen extends StatelessWidget {
 }
 
 class TrainingTableWidget extends StatelessWidget {
+  static const defaultTable = [
+    ['1:00', '1:00'],
+    ['1:00', '1:00'],
+    ['1:00', '1:00'],
+  ];
+
+  final TrainingTable _currTable;
+
+  TrainingTableWidget(this._currTable);
+
   TableRow _buildTableRow(String index, String holdTime, String breatheTime,
       {bool isTitle = false, BuildContext context}) {
     return TableRow(
@@ -178,12 +267,20 @@ class TrainingTableWidget extends StatelessWidget {
         children: <TableRow>[
           _buildTableRow('#', 'Hold', 'Breathe',
               isTitle: true, context: context),
-          _buildTableRow('1', '3:32', '5:58'),
-          _buildTableRow('2', '3:32', '5:58'),
-          _buildTableRow('3', '3:32', '5:58'),
-          _buildTableRow('4', '3:32', '5:58'),
-          _buildTableRow('5', '3:32', '5:58'),
-          _buildTableRow('6', '3:32', '5:58'),
+          ...List<TableRow>.generate(
+            _currTable == null ? defaultTable.length : _currTable.table.length,
+            (i) {
+              return _buildTableRow(
+                '${i + 1}',
+                _currTable == null
+                    ? defaultTable[i][0]
+                    : _currTable.table[i].holdTime.toString(),
+                _currTable == null
+                    ? defaultTable[i][1]
+                    : _currTable.table[i].breatheTime.toString(),
+              );
+            },
+          ).toList(),
         ],
       ),
     );

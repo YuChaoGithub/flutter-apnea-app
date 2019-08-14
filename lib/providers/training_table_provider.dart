@@ -8,6 +8,10 @@ class TrainingTableProvider with ChangeNotifier {
   List<TrainingTable> _tables = [];
 
   List<TrainingTable> get tables {
+    if (_tables.isEmpty) {
+      fetchAndSetTable();
+    }
+
     return [..._tables];
   }
 
@@ -19,7 +23,6 @@ class TrainingTableProvider with ChangeNotifier {
     if (table.key == '') {
       table.key = UniqueKey().toString();
     }
-    print(table.key);
     _tables.add(table);
     notifyListeners();
     DBHelper.insert('training_table', {
@@ -43,7 +46,6 @@ class TrainingTableProvider with ChangeNotifier {
     for (int i = 0; i < tableList.length; i++) {
       TrainingTable currTable = TrainingTable();
       currTable.key = tableList[i]['uniqueKey'];
-      print(currTable.key);
       currTable.name = tableList[i]['name'];
       currTable.description = tableList[i]['description'];
 
@@ -80,6 +82,6 @@ class TrainingTableProvider with ChangeNotifier {
   // }
 
   TrainingTable getTable(String key) {
-    return _tables.firstWhere((t) => t.key == key);
+    return _tables.firstWhere((t) => t.key == key, orElse: () => null);
   }
 }

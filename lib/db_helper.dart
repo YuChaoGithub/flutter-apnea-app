@@ -29,7 +29,8 @@ CREATE TABLE training_table(
     '''
 CREATE TABLE training_histories(
   uniqueKey CHAR(8) PRIMARY KEY,
-  trainingTableKey INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(100) NOT NULL,
   datetime DATETIME NOT NULL
 );'''
   ];

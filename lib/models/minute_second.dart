@@ -15,6 +15,12 @@ class MinuteSecond {
     this.second = int.parse(splitted[1]);
   }
 
+  MinuteSecond.fromDuration(Duration duration) {
+    final seconds = duration.inSeconds;
+    this.minute = (seconds / Duration.secondsPerMinute).floor();
+    this.second = seconds % Duration.secondsPerMinute;
+  }
+
   String toString() {
     return '$minute:' + '$second'.padLeft(2, '0');
   }

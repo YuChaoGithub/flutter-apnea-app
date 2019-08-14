@@ -1,6 +1,4 @@
 # Todo
-* Training Table deletion.
-* Configure the ListTiles in Customize Tables Screen.
 * Training Main Screen.
 * Separate the training history table entry TABLE in the database from the customized training TABLE.
 * Training History.
@@ -40,3 +38,7 @@
 * Hooked up the saving/editing functionality of Customize Table Screen with providers.
 * Set up database.
 * Hooked up the database with Customize Table Screen functionalities.
+
+## 2018.08.14
+* Hooked up the customized tables with the training screen.
+* Figured out how to make a countdown timer system using Timer() and Stopwatch(). (It takes me so much time...)

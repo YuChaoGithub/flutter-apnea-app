@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../models/minute_second.dart';
 
-class TimerWidget extends StatelessWidget {
+class TimerViewWidget extends StatelessWidget {
   final MinuteSecond currTime;
 
-  TimerWidget(this.currTime);
+  TimerViewWidget(this.currTime);
 
   @override
   Widget build(BuildContext context) {
