@@ -42,3 +42,6 @@
 ## 2018.08.14
 * Hooked up the customized tables with the training screen.
 * Figured out how to make a countdown timer system using Timer() and Stopwatch(). (It takes me so much time...)
+
+## 2018.08.15
+* Fixed a bug related to altering a variable in a final state. It takes me more than 3 hours. Bah!

@@ -28,7 +28,7 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
   static const _trainingTableRange = [3, 4, 5, 6];
   final _form = GlobalKey<FormState>();
   int _totalTableRows = 4;
-  TrainingTable _editedForm = TrainingTable();
+  TrainingTable _editedForm;
   var _isInit = true;
 
   @override
@@ -38,8 +38,31 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
       if (tableKey != null) {
         _editedForm = Provider.of<TrainingTableProvider>(context, listen: false)
             .getTable(tableKey);
-        _totalTableRows = _editedForm.table.length;
+      } else {
+        _editedForm = TrainingTable(
+          key: UniqueKey().toString(),
+          name: '',
+          description: '',
+          table: [
+            TrainingTableEntry(
+              index: 0,
+              holdTime: MinuteSecond.fromString('1:00'),
+              breatheTime: MinuteSecond.fromString('1:00'),
+            ),
+            TrainingTableEntry(
+              index: 1,
+              holdTime: MinuteSecond.fromString('1:00'),
+              breatheTime: MinuteSecond.fromString('1:00'),
+            ),
+            TrainingTableEntry(
+              index: 2,
+              holdTime: MinuteSecond.fromString('1:00'),
+              breatheTime: MinuteSecond.fromString('1:00'),
+            )
+          ],
+        );
       }
+      _totalTableRows = _editedForm.table.length;
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -57,8 +80,8 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
     //       .addTable(_editedForm);
     // }
     Provider.of<TrainingTableProvider>(context, listen: false)
-        .addTable(_editedForm);
-    Navigator.of(context).pop();
+        .addTable(_editedForm)
+        .then((val) => Navigator.of(context).pop());
   }
 
   void _tableChanged(List<List<String>> tableContent) {

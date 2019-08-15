@@ -21,13 +21,46 @@ class TrainingScreen extends StatefulWidget {
 
 class _TrainingScreenState extends State<TrainingScreen> {
   static const _timerDelay = Duration(microseconds: 1);
-
-  TrainingTable _currTable;
+  TrainingTable _currTable = TrainingTableProvider.defaultTable;
+  int _currRow = -1;
+  int _currCol = 0;
   Timer _timer;
   Stopwatch _stopwatch = Stopwatch();
   Duration _stopwatchGoal;
   MinuteSecond _timeLeft;
-  Function _stopwatchCompletion;
+  Future<void> fetchFuture;
+
+  void _startTimer() {
+    _currRow = 0;
+    _currCol = 0;
+
+    _configureStopwatchAndStart();
+  }
+
+  void _configureStopwatchAndStart() {
+    final MinuteSecond goal = _currCol == 0
+        ? _currTable.table[_currRow].holdTime
+        : _currTable.table[_currRow].breatheTime;
+    _stopwatchGoal = Duration(minutes: goal.minute, seconds: goal.second);
+    _stopwatch.start();
+  }
+
+  void _stopwatchCompleted() {
+    if (_currCol == 0) {
+      setState(() {
+        ++_currCol;
+        _configureStopwatchAndStart();
+      });
+    } else if (_currRow + 1 < _currTable.table.length) {
+      setState(() {
+        _currCol = 0;
+        ++_currRow;
+        _configureStopwatchAndStart();
+      });
+    } else {
+      print('Session is over!');
+    }
+  }
 
   void _update() {
     if (_stopwatch.isRunning) {
@@ -35,9 +68,9 @@ class _TrainingScreenState extends State<TrainingScreen> {
         _stopwatch
           ..stop()
           ..reset();
-        _stopwatchCompletion();
 
         setState(() => _timeLeft = MinuteSecond(minute: 0, second: 0));
+        _stopwatchCompleted();
       } else {
         setState(() {
           _timeLeft =
@@ -55,6 +88,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
   void initState() {
     super.initState();
 
+    fetchFuture = Provider.of<TrainingTableProvider>(context, listen: false)
+        .fetchAndSetTable();
     _timer = Timer.periodic(_timerDelay, (Timer t) => _update());
   }
 
@@ -160,52 +195,52 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 ),
                 onPressed: () {
                   if (!_stopwatch.isRunning) {
-                    _stopwatchGoal = Duration(minutes: 1);
-                    _stopwatch.start();
+                    _startTimer();
                   }
                 },
               ),
             ),
             SizedBox(height: 5),
-            Consumer<TrainingTableProvider>(
-              builder: (ctx, provider, ch) {
-                return DropdownButton(
-                  value: _currTable == null ? null : _currTable.key,
-                  underline: Container(
-                    height: 1.0,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).textTheme.title.color,
-                          width: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: null,
-                      child: const Text('Default Training'),
-                    ),
-                    ...List<DropdownMenuItem>.generate(
-                      provider.tables.length,
-                      (i) {
-                        final table = provider.tables[i];
-                        return DropdownMenuItem(
-                          child: Text(table.name),
-                          value: table.key,
+            FutureBuilder(
+              future: fetchFuture,
+              builder: (ctx, snapshot) => snapshot.connectionState ==
+                      ConnectionState.waiting
+                  ? Center(child: CircularProgressIndicator())
+                  : Consumer<TrainingTableProvider>(
+                      builder: (ctx, provider, ch) {
+                        return DropdownButton(
+                          value: _currTable.key,
+                          underline: Container(
+                            height: 1.0,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color:
+                                      Theme.of(context).textTheme.title.color,
+                                  width: 1.2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          items: List<DropdownMenuItem>.generate(
+                            provider.tables.length,
+                            (i) {
+                              final table = provider.tables[i];
+                              return DropdownMenuItem(
+                                child: Text(table.name),
+                                value: table.key,
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (val) {
+                            setState(() => _currTable = provider.getTable(val));
+                          },
                         );
                       },
-                    ).toList()
-                  ],
-                  onChanged: (val) {
-                    setState(() => _currTable = provider.getTable(val));
-                  },
-                );
-              },
+                    ),
             ),
             SizedBox(height: 20),
-            TrainingTableWidget(_currTable),
+            TrainingTableWidget(_currTable, _currRow, _currCol),
           ],
         ),
       ),
@@ -214,15 +249,11 @@ class _TrainingScreenState extends State<TrainingScreen> {
 }
 
 class TrainingTableWidget extends StatelessWidget {
-  static const defaultTable = [
-    ['1:00', '1:00'],
-    ['1:00', '1:00'],
-    ['1:00', '1:00'],
-  ];
-
   final TrainingTable _currTable;
+  final int _currRow;
+  final int _currCol;
 
-  TrainingTableWidget(this._currTable);
+  TrainingTableWidget(this._currTable, this._currRow, this._currCol);
 
   TableRow _buildTableRow(String index, String holdTime, String breatheTime,
       {bool isTitle = false, BuildContext context}) {
@@ -237,18 +268,41 @@ class TrainingTableWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 3.0),
-          child: Text(index,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+          child: Text(
+            index,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 3.0),
-          child: Text(holdTime,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+          child: Text(
+            holdTime,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: (_currRow > 0 &&
+                      _currRow == int.parse(index) - 1 &&
+                      _currCol == 0)
+                  ? Colors.lightBlue
+                  : Theme.of(context).textTheme.title.color,
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 3.0),
-          child: Text(breatheTime,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+          child: Text(
+            breatheTime,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: (_currRow > 0 &&
+                      _currRow == int.parse(index) - 1 &&
+                      _currCol == 1)
+                  ? Colors.lightBlue
+                  : Theme.of(context).textTheme.title.color,
+            ),
+          ),
         ),
       ],
     );
@@ -268,17 +322,13 @@ class TrainingTableWidget extends StatelessWidget {
           _buildTableRow('#', 'Hold', 'Breathe',
               isTitle: true, context: context),
           ...List<TableRow>.generate(
-            _currTable == null ? defaultTable.length : _currTable.table.length,
+            _currTable.table.length,
             (i) {
               return _buildTableRow(
-                '${i + 1}',
-                _currTable == null
-                    ? defaultTable[i][0]
-                    : _currTable.table[i].holdTime.toString(),
-                _currTable == null
-                    ? defaultTable[i][1]
-                    : _currTable.table[i].breatheTime.toString(),
-              );
+                  '${i + 1}',
+                  _currTable.table[i].holdTime.toString(),
+                  _currTable.table[i].breatheTime.toString(),
+                  context: context);
             },
           ).toList(),
         ],

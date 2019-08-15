@@ -16,8 +16,15 @@ class TrainingTableEntry {
 }
 
 class TrainingTable {
-  String key = '';
-  String name = '';
-  String description = '';
-  List<TrainingTableEntry> table = [];
+  String key;
+  String name;
+  String description;
+  List<TrainingTableEntry> table;
+
+  TrainingTable({
+    this.key = '',
+    this.name = '',
+    this.description = '',
+    this.table,
+  });
 }

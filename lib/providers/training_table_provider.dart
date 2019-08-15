@@ -5,13 +5,32 @@ import '../db_helper.dart';
 import '../models/training_table.dart';
 
 class TrainingTableProvider with ChangeNotifier {
-  List<TrainingTable> _tables = [];
+  static final defaultTable = TrainingTable(
+    key: '#[00000]',
+    name: ' Default Training',
+    description: '',
+    table: <TrainingTableEntry>[
+      TrainingTableEntry(
+        index: 0,
+        holdTime: MinuteSecond.fromString('1:00'),
+        breatheTime: MinuteSecond.fromString('1:00'),
+      ),
+      TrainingTableEntry(
+        index: 1,
+        holdTime: MinuteSecond.fromString('1:00'),
+        breatheTime: MinuteSecond.fromString('1:00'),
+      ),
+      TrainingTableEntry(
+        index: 2,
+        holdTime: MinuteSecond.fromString('1:00'),
+        breatheTime: MinuteSecond.fromString('1:00'),
+      ),
+    ],
+  );
+
+  List<TrainingTable> _tables = [defaultTable];
 
   List<TrainingTable> get tables {
-    if (_tables.isEmpty) {
-      fetchAndSetTable();
-    }
-
     return [..._tables];
   }
 
@@ -19,19 +38,14 @@ class TrainingTableProvider with ChangeNotifier {
     return _tables.length;
   }
 
-  void addTable(TrainingTable table) {
-    if (table.key == '') {
-      table.key = UniqueKey().toString();
-    }
-    _tables.add(table);
-    notifyListeners();
-    DBHelper.insert('training_table', {
+  Future<void> addTable(TrainingTable table) async {
+    await DBHelper.insert('training_table', {
       'uniqueKey': table.key,
       'name': table.name,
       'description': table.description,
     });
     for (int i = 0; i < table.table.length; i++) {
-      DBHelper.insert('training_table_entry', {
+      await DBHelper.insert('training_table_entry', {
         'trainingTableKey': table.key,
         'rowIndex': i,
         'holdTime': table.table[i].holdTime.toString(),
@@ -41,13 +55,15 @@ class TrainingTableProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetTable() async {
-    _tables = [];
+    var newTables = [defaultTable];
     final tableList = await DBHelper.getData('training_table');
     for (int i = 0; i < tableList.length; i++) {
-      TrainingTable currTable = TrainingTable();
-      currTable.key = tableList[i]['uniqueKey'];
-      currTable.name = tableList[i]['name'];
-      currTable.description = tableList[i]['description'];
+      TrainingTable currTable = TrainingTable(
+        key: tableList[i]['uniqueKey'],
+        name: tableList[i]['name'],
+        description: tableList[i]['description'],
+        table: [],
+      );
 
       final entryList = await DBHelper.getTableEntries(currTable.key);
       for (int row = 0; row < entryList.length; row++) {
@@ -62,9 +78,10 @@ class TrainingTableProvider with ChangeNotifier {
           ),
         );
       }
-      _tables.add(currTable);
-      _tables.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
+      newTables.add(currTable);
     }
+    newTables.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
+    _tables = newTables;
     notifyListeners();
   }
 
