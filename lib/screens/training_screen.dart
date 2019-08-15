@@ -135,7 +135,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
           children: <Widget>[
             SizedBox(height: 20),
             Text(
-              'Prepare',
+              _currRow < 0 ? 'Prepare' : (_currCol == 0 ? 'Hold' : 'Breathe'),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 30),
             ),
@@ -203,41 +203,46 @@ class _TrainingScreenState extends State<TrainingScreen> {
             SizedBox(height: 5),
             FutureBuilder(
               future: fetchFuture,
-              builder: (ctx, snapshot) => snapshot.connectionState ==
-                      ConnectionState.waiting
-                  ? Center(child: CircularProgressIndicator())
-                  : Consumer<TrainingTableProvider>(
-                      builder: (ctx, provider, ch) {
-                        return DropdownButton(
-                          value: _currTable.key,
-                          underline: Container(
-                            height: 1.0,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color:
-                                      Theme.of(context).textTheme.title.color,
-                                  width: 1.2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          items: List<DropdownMenuItem>.generate(
-                            provider.tables.length,
-                            (i) {
-                              final table = provider.tables[i];
-                              return DropdownMenuItem(
-                                child: Text(table.name),
-                                value: table.key,
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (val) {
-                            setState(() => _currTable = provider.getTable(val));
+              builder: (ctx, snapshot) =>
+                  snapshot.connectionState == ConnectionState.waiting
+                      ? Center(child: CircularProgressIndicator())
+                      : Consumer<TrainingTableProvider>(
+                          builder: (ctx, provider, ch) {
+                            return _stopwatch.isRunning
+                                ? SizedBox(height: 15)
+                                : DropdownButton(
+                                    value: _currTable.key,
+                                    underline: Container(
+                                      height: 1.0,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .title
+                                                .color,
+                                            width: 1.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    items: List<DropdownMenuItem>.generate(
+                                      provider.tables.length,
+                                      (i) {
+                                        final table = provider.tables[i];
+                                        return DropdownMenuItem(
+                                          child: Text(table.name),
+                                          value: table.key,
+                                        );
+                                      },
+                                    ).toList(),
+                                    onChanged: (val) {
+                                      setState(() =>
+                                          _currTable = provider.getTable(val));
+                                    },
+                                  );
                           },
-                        );
-                      },
-                    ),
+                        ),
             ),
             SizedBox(height: 20),
             TrainingTableWidget(_currTable, _currRow, _currCol),
@@ -281,7 +286,8 @@ class TrainingTableWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
-              color: (_currRow > 0 &&
+              color: (!isTitle &&
+                      _currRow >= 0 &&
                       _currRow == int.parse(index) - 1 &&
                       _currCol == 0)
                   ? Colors.lightBlue
@@ -296,7 +302,8 @@ class TrainingTableWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
-              color: (_currRow > 0 &&
+              color: (!isTitle &&
+                      _currRow >= 0 &&
                       _currRow == int.parse(index) - 1 &&
                       _currCol == 1)
                   ? Colors.lightBlue
