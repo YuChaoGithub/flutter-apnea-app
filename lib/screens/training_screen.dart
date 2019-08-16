@@ -11,6 +11,7 @@ import '../widgets/drawer_widget.dart';
 import './customize_tables_screen.dart';
 import './training_history_screen.dart';
 import '../providers/training_table_provider.dart';
+import '../providers/settings_provider.dart';
 
 class TrainingScreen extends StatefulWidget {
   static const routeName = '/training';
@@ -23,18 +24,30 @@ class _TrainingScreenState extends State<TrainingScreen> {
   static const _timerDelay = Duration(microseconds: 1);
   TrainingTable _currTable = TrainingTableProvider.defaultTable;
   int _currRow = -1;
-  int _currCol = 0;
+  int _currCol = 1;
   Timer _timer;
   Stopwatch _stopwatch = Stopwatch();
   Duration _stopwatchGoal;
   MinuteSecond _timeLeft;
   Future<void> fetchFuture;
+  bool _paused = false;
+  MinuteSecond _contractionTime;
 
   void _startTimer() {
-    _currRow = 0;
-    _currCol = 0;
+    _currRow = -1;
+    _currCol = 1;
+    _stopwatchGoal = SettingsProvider.prepareTime;
+    _stopwatch.start();
+  }
 
-    _configureStopwatchAndStart();
+  void _pauseTimer() {
+    _paused = true;
+    _stopwatch.stop();
+  }
+
+  void _resumeTimer() {
+    _paused = false;
+    _stopwatch.start();
   }
 
   void _configureStopwatchAndStart() {
@@ -43,6 +56,11 @@ class _TrainingScreenState extends State<TrainingScreen> {
         : _currTable.table[_currRow].breatheTime;
     _stopwatchGoal = Duration(minutes: goal.minute, seconds: goal.second);
     _stopwatch.start();
+  }
+
+  void _recordContractionTime() {
+    _contractionTime =
+        MinuteSecond.fromDuration(_stopwatchGoal - _timeLeft.toDuration());
   }
 
   void _stopwatchCompleted() {
@@ -58,8 +76,42 @@ class _TrainingScreenState extends State<TrainingScreen> {
         _configureStopwatchAndStart();
       });
     } else {
-      print('Session is over!');
+      _terminateSession();
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text(
+              'Good Job!',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+            content: const Text('The session has completed!'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'OK!',
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.button.color,
+                  ),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        },
+      );
     }
+  }
+
+  void _terminateSession() {
+    _stopwatch
+      ..stop()
+      ..reset();
+    setState(() {
+      _timeLeft = null;
+      _currRow = -1;
+      _contractionTime = null;
+    });
   }
 
   void _update() {
@@ -78,10 +130,6 @@ class _TrainingScreenState extends State<TrainingScreen> {
         });
       }
     }
-  }
-
-  void complete() {
-    print('COMPLETE!!!');
   }
 
   @override
@@ -110,24 +158,28 @@ class _TrainingScreenState extends State<TrainingScreen> {
             textAlign: TextAlign.center,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Image.asset('assets/icons/settings.png',
-                color: Theme.of(context).primaryIconTheme.color),
-            onPressed: () {
-              Navigator.of(context).pushNamed(CustomizeTableScreen.routeName);
-            },
-          ),
-          IconButton(
-            icon: Image.asset('assets/icons/history.png',
-                color: Theme.of(context).primaryIconTheme.color),
-            onPressed: () {
-              Navigator.of(context).pushNamed(TrainingHistoryScreen.routeName);
-            },
-          ),
-        ],
+        actions: (_paused || _stopwatch.isRunning)
+            ? []
+            : <Widget>[
+                IconButton(
+                  icon: Image.asset('assets/icons/settings.png',
+                      color: Theme.of(context).primaryIconTheme.color),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(CustomizeTableScreen.routeName);
+                  },
+                ),
+                IconButton(
+                  icon: Image.asset('assets/icons/history.png',
+                      color: Theme.of(context).primaryIconTheme.color),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(TrainingHistoryScreen.routeName);
+                  },
+                ),
+              ],
       ),
-      drawer: DrawerWidget(),
+      drawer: (_paused || _stopwatch.isRunning) ? null : DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +187,11 @@ class _TrainingScreenState extends State<TrainingScreen> {
           children: <Widget>[
             SizedBox(height: 20),
             Text(
-              _currRow < 0 ? 'Prepare' : (_currCol == 0 ? 'Hold' : 'Breathe'),
+              _paused
+                  ? 'Paused'
+                  : (_currRow < 0
+                      ? 'Prepare'
+                      : (_currCol == 0 ? 'Hold' : 'Breathe')),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 30),
             ),
@@ -148,7 +204,14 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     'assets/icons/lungs.png',
                     color: Theme.of(context).iconTheme.color,
                   ),
-                  onPressed: () {},
+                  onPressed:
+                      !_paused && (_contractionTime == null) && _currRow >= 0
+                          ? () {
+                              if (_stopwatch.isRunning) {
+                                _recordContractionTime();
+                              }
+                            }
+                          : null,
                 ),
                 SizedBox(width: 30),
                 Container(
@@ -172,35 +235,34 @@ class _TrainingScreenState extends State<TrainingScreen> {
             TimerViewWidget(_timeLeft),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text('Contraction started at 2:30'),
+              child: _contractionTime == null
+                  ? Container()
+                  : Text(
+                      'Contraction started at ${_contractionTime.toString()}.'),
             ),
             SizedBox(height: 10),
-            ProgressBar(),
+            _timeLeft == null
+                ? ProgressBar(1.0)
+                : ProgressBar(_timeLeft.toDuration().inMilliseconds /
+                    _stopwatchGoal.inMilliseconds),
             SizedBox(height: 20),
-            Container(
-              height: 70,
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                shape: CircleBorder(
-                  side: BorderSide(
-                    width: 2,
-                    color: Theme.of(context).textTheme.button.color,
-                  ),
-                ),
-                color: Colors.white,
-                child: Image.asset(
-                  'assets/icons/play.png',
-                  scale: 15,
-                  color: Theme.of(context).iconTheme.color,
-                ),
-                onPressed: () {
-                  if (!_stopwatch.isRunning) {
-                    _startTimer();
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: 5),
+            _stopwatch.isRunning
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ControlButton(
+                          'assets/icons/pause.png', () => _pauseTimer()),
+                      ControlButton(
+                          'assets/icons/stop.png', () => _terminateSession()),
+                    ],
+                  )
+                : ControlButton('assets/icons/play.png', () {
+                    if (_paused) {
+                      _resumeTimer();
+                    } else {
+                      _startTimer();
+                    }
+                  }),
             FutureBuilder(
               future: fetchFuture,
               builder: (ctx, snapshot) =>
@@ -208,7 +270,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : Consumer<TrainingTableProvider>(
                           builder: (ctx, provider, ch) {
-                            return _stopwatch.isRunning
+                            _currTable = provider.getTable(_currTable.key);
+                            return (_paused || _stopwatch.isRunning)
                                 ? SizedBox(height: 15)
                                 : DropdownButton(
                                     value: _currTable.key,
@@ -248,6 +311,36 @@ class _TrainingScreenState extends State<TrainingScreen> {
             TrainingTableWidget(_currTable, _currRow, _currCol),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ControlButton extends StatelessWidget {
+  ControlButton(this._iconPath, this._onPressed);
+
+  final Function _onPressed;
+  final String _iconPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.all(8.0),
+      child: RaisedButton(
+        shape: CircleBorder(
+          side: BorderSide(
+            width: 2,
+            color: Theme.of(context).textTheme.button.color,
+          ),
+        ),
+        color: Colors.white,
+        child: Image.asset(
+          _iconPath,
+          scale: 15,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        onPressed: _onPressed,
       ),
     );
   }

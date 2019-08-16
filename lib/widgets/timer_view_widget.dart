@@ -23,7 +23,7 @@ class TimerViewWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            currTime.toString(),
+            currTime == null ? '0:00' : currTime.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 40,

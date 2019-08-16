@@ -21,6 +21,10 @@ class MinuteSecond {
     this.second = seconds % Duration.secondsPerMinute;
   }
 
+  Duration toDuration() {
+    return Duration(minutes: minute, seconds: second);
+  }
+
   String toString() {
     return '$minute:' + '$second'.padLeft(2, '0');
   }

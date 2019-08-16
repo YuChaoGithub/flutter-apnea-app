@@ -1,7 +1,4 @@
 # Todo
-* Training Main Screen:
-  - Pause. Contraction. Prepare. Record.
-* Separate the training history table entry TABLE in the database from the customized training TABLE.
 * Training History.
 * Breath Hold Test.
 * Breath Hold Test History.
@@ -47,3 +44,6 @@
 ## 2018.08.15
 * Fixed a bug related to altering a variable in a final state. It takes me more than 3 hours. Bah!
 * Completed the timer in Training Screen.
+
+## 2018.08.16
+* Completed paused, stop, contraction record, prepare countdown functionalites of Training Screen.
