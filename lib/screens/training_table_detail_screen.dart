@@ -8,6 +8,7 @@ import '../models/training_table.dart';
 class TrainingTableDetailScreen extends StatefulWidget {
   static const routeName = '/training-table-detail';
   static const durationSelections = [
+    '0:30',
     '1:00',
     '1:30',
     '2:00',
@@ -217,7 +218,17 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
                       return DropdownMenuItem(value: i, child: Text('$i'));
                     }).toList(),
                     onChanged: (val) {
-                      setState(() => _totalTableRows = val);
+                      setState(() {
+                        _totalTableRows = val;
+                        _tableChanged([
+                          ['1:00', '1:00'],
+                          ['1:00', '1:00'],
+                          ['1:00', '1:00'],
+                          ['1:00', '1:00'],
+                          ['1:00', '1:00'],
+                          ['1:00', '1:00'],
+                        ]);
+                      });
                     },
                     underline: DropdownButtonUnderline(),
                   ),

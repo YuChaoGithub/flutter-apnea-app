@@ -39,6 +39,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
   void _startTimer() {
     _currRow = -1;
     _currCol = 1;
+    _allContractionTimes = [];
     _stopwatchGoal = SettingsProvider.prepareTime;
     _stopwatch.start();
   }
@@ -58,7 +59,6 @@ class _TrainingScreenState extends State<TrainingScreen> {
         ? _currTable.table[_currRow].holdTime
         : _currTable.table[_currRow].breatheTime;
     _stopwatchGoal = Duration(minutes: goal.minute, seconds: goal.second);
-    _allContractionTimes = [];
     _stopwatch.start();
   }
 
@@ -72,6 +72,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
     if (_currCol == 0) {
       setState(() {
         ++_currCol;
+        _contractionTime = null;
         _configureStopwatchAndStart();
       });
     } else if (_currRow + 1 < _currTable.table.length) {
@@ -221,14 +222,16 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     'assets/icons/lungs.png',
                     color: Theme.of(context).iconTheme.color,
                   ),
-                  onPressed:
-                      !_paused && (_contractionTime == null) && _currRow >= 0
-                          ? () {
-                              if (_stopwatch.isRunning) {
-                                _recordContractionTime();
-                              }
-                            }
-                          : null,
+                  onPressed: !_paused &&
+                          (_contractionTime == null) &&
+                          _currRow >= 0 &&
+                          _currCol == 0
+                      ? () {
+                          if (_stopwatch.isRunning) {
+                            _recordContractionTime();
+                          }
+                        }
+                      : null,
                 ),
                 SizedBox(width: 30),
                 Container(
@@ -442,10 +445,11 @@ class TrainingTableWidget extends StatelessWidget {
             _currTable.table.length,
             (i) {
               return _buildTableRow(
-                  '${i + 1}',
-                  _currTable.table[i].holdTime.toString(),
-                  _currTable.table[i].breatheTime.toString(),
-                  context: context);
+                '${i + 1}',
+                _currTable.table[i].holdTime.toString(),
+                _currTable.table[i].breatheTime.toString(),
+                context: context,
+              );
             },
           ).toList(),
         ],

@@ -82,7 +82,7 @@ CREATE TABLE contractions(
         [tableKey]);
   }
 
-  static Future<List> getContractions(String historyKey) async {
+  static Future<List<Map>> getContractions(String historyKey) async {
     final db = await DBHelper.database();
     return db.rawQuery(
         'SELECT * FROM contractions WHERE trainingHistoryKey = ? ORDER BY rowIndex ASC',

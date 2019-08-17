@@ -1,5 +1,4 @@
 # Todo
-* Training History Details Screen.
 * Breath Hold Test.
 * Breath Hold Test History.
 * Settings:
@@ -52,3 +51,4 @@
 
 ## 2018.08.17
 * Completed the saving and fetching of Training Histories.
+* Completed Training History Detail Screen.

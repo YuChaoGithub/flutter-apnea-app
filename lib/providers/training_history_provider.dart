@@ -26,6 +26,7 @@ class TrainingHistoryProvider with ChangeNotifier {
           DateFormat('yyyy-MM-dd HH:mm').format(history.trainingDateTime),
     });
 
+    print(history.contractions.length);
     for (int i = 0; i < history.contractions.length; i++) {
       await DBHelper.insert('contractions', {
         'trainingHistoryKey': history.key,
@@ -73,13 +74,14 @@ class TrainingHistoryProvider with ChangeNotifier {
       final contractionList = await DBHelper.getContractions(currHistory.key);
       for (int row = 0; row < contractionList.length; row++) {
         currHistory.contractions
-            .add(MinuteSecond.fromString(contractionList[row]));
+            .add(MinuteSecond.fromString(contractionList[row]['time']));
       }
       newHistories.add(currHistory);
     }
     newHistories.sort(
         (lhs, rhs) => lhs.trainingDateTime.compareTo(rhs.trainingDateTime));
     _histories = newHistories;
+    notifyListeners();
   }
 
   void deleteHistory(String key) async {
