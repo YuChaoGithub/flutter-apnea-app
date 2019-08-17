@@ -31,7 +31,14 @@ CREATE TABLE training_histories(
   uniqueKey CHAR(8) PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   description VARCHAR(100) NOT NULL,
-  datetime DATETIME NOT NULL
+  datetime VARCHAR(20) NOT NULL
+);''',
+    '''
+CREATE TABLE contractions(
+  trainingHistoryKey CHAR(8) NOT NULL,
+  rowIndex INT NOT NULL,
+  time VARCHAR(5) NOT NULL,
+  PRIMARY KEY(trainingHistoryKey, rowIndex)
 );'''
   ];
 
@@ -73,5 +80,12 @@ CREATE TABLE training_histories(
     return db.rawQuery(
         'SELECT * FROM training_table_entry WHERE trainingTableKey = ? ORDER BY rowIndex ASC',
         [tableKey]);
+  }
+
+  static Future<List> getContractions(String historyKey) async {
+    final db = await DBHelper.database();
+    return db.rawQuery(
+        'SELECT * FROM contractions WHERE trainingHistoryKey = ? ORDER BY rowIndex ASC',
+        [historyKey]);
   }
 }

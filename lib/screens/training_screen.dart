@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/training_table.dart';
 import '../models/minute_second.dart';
+import '../models/training_history_data.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/timer_view_widget.dart';
 import '../widgets/drawer_widget.dart';
@@ -12,6 +13,7 @@ import './customize_tables_screen.dart';
 import './training_history_screen.dart';
 import '../providers/training_table_provider.dart';
 import '../providers/settings_provider.dart';
+import '../providers/training_history_provider.dart';
 
 class TrainingScreen extends StatefulWidget {
   static const routeName = '/training';
@@ -32,6 +34,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
   Future<void> fetchFuture;
   bool _paused = false;
   MinuteSecond _contractionTime;
+  List<MinuteSecond> _allContractionTimes;
 
   void _startTimer() {
     _currRow = -1;
@@ -55,12 +58,14 @@ class _TrainingScreenState extends State<TrainingScreen> {
         ? _currTable.table[_currRow].holdTime
         : _currTable.table[_currRow].breatheTime;
     _stopwatchGoal = Duration(minutes: goal.minute, seconds: goal.second);
+    _allContractionTimes = [];
     _stopwatch.start();
   }
 
   void _recordContractionTime() {
     _contractionTime =
         MinuteSecond.fromDuration(_stopwatchGoal - _timeLeft.toDuration());
+    _allContractionTimes.add(_contractionTime);
   }
 
   void _stopwatchCompleted() {
@@ -94,7 +99,19 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     color: Theme.of(context).textTheme.button.color,
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  final history = TrainingHistoryData(
+                    key: UniqueKey().toString(),
+                    name: _currTable.name,
+                    description: _currTable.description,
+                    table: _currTable.table,
+                    trainingDateTime: DateTime.now(),
+                    contractions: _allContractionTimes,
+                  );
+                  Provider.of<TrainingHistoryProvider>(context, listen: false)
+                      .addHistory(history)
+                      .then((_) => Navigator.of(context).pop());
+                },
               )
             ],
           );

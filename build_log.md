@@ -1,9 +1,11 @@
 # Todo
-* Training History.
+* Training History Details Screen.
 * Breath Hold Test.
 * Breath Hold Test History.
-* Prototyping functionalities (hook up the providers/consumers).
-* Dark mode.
+* Settings:
+  - Dark mode.
+  - Prepare time.
+  - Voice Over.
 * Animations.
 * Google Admobs.
 
@@ -47,3 +49,6 @@
 
 ## 2018.08.16
 * Completed paused, stop, contraction record, prepare countdown functionalites of Training Screen.
+
+## 2018.08.17
+* Completed the saving and fetching of Training Histories.
