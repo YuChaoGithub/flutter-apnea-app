@@ -10,6 +10,12 @@ class MinuteSecond {
   });
 
   MinuteSecond.fromString(String str) {
+    if (str == "null") {
+      this.minute = -1;
+      this.second = -1;
+      return;
+    }
+
     final List<String> splitted = str.split(':');
     this.minute = int.parse(splitted[0]);
     this.second = int.parse(splitted[1]);
@@ -27,5 +33,9 @@ class MinuteSecond {
 
   String toString() {
     return '$minute:' + '$second'.padLeft(2, '0');
+  }
+
+  bool isNull() {
+    return this.minute == -1 && this.second == -1;
   }
 }

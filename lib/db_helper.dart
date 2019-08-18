@@ -8,7 +8,7 @@ class DBHelper {
     '''
 CREATE TABLE breath_hold_histories(
   uniqueKey CHAR(5) PRIMARY KEY,
-  datetime DATETIME NOT NULL,
+  datetime VARCHAR(20) NOT NULL,
   firstContraction VARCHAR(5),
   duration VARCHAR(5) NOT NULL
 );''',

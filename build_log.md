@@ -1,6 +1,4 @@
 # Todo
-* Breath Hold Test.
-* Breath Hold Test History.
 * Settings:
   - Dark mode.
   - Prepare time.
@@ -52,3 +50,7 @@
 ## 2018.08.17
 * Completed the saving and fetching of Training Histories.
 * Completed Training History Detail Screen.
+
+## 2018.08.18
+* Completed Breath Hold Test Screen.
+* Completed Breath Hold Test History Screen.

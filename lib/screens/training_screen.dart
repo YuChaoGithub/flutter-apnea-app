@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/training_table.dart';
 import '../models/minute_second.dart';
 import '../models/training_history_data.dart';
+import '../widgets/control_button.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/timer_view_widget.dart';
 import '../widgets/drawer_widget.dart';
@@ -225,12 +226,9 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   onPressed: !_paused &&
                           (_contractionTime == null) &&
                           _currRow >= 0 &&
-                          _currCol == 0
-                      ? () {
-                          if (_stopwatch.isRunning) {
-                            _recordContractionTime();
-                          }
-                        }
+                          _currCol == 0 &&
+                          _stopwatch.isRunning
+                      ? _recordContractionTime
                       : null,
                 ),
                 SizedBox(width: 30),
@@ -258,7 +256,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
               child: _contractionTime == null
                   ? Container()
                   : Text(
-                      'Contraction started at ${_contractionTime.toString()}.'),
+                      'Contraction started at ${_contractionTime.toString()}.',
+                    ),
             ),
             SizedBox(height: 10),
             _timeLeft == null
@@ -270,19 +269,12 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      ControlButton(
-                          'assets/icons/pause.png', () => _pauseTimer()),
-                      ControlButton(
-                          'assets/icons/stop.png', () => _terminateSession()),
+                      ControlButton('assets/icons/pause.png', _pauseTimer),
+                      ControlButton('assets/icons/stop.png', _terminateSession),
                     ],
                   )
-                : ControlButton('assets/icons/play.png', () {
-                    if (_paused) {
-                      _resumeTimer();
-                    } else {
-                      _startTimer();
-                    }
-                  }),
+                : ControlButton('assets/icons/play.png',
+                    _paused ? _resumeTimer : _startTimer),
             FutureBuilder(
               future: fetchFuture,
               builder: (ctx, snapshot) =>
@@ -331,36 +323,6 @@ class _TrainingScreenState extends State<TrainingScreen> {
             TrainingTableWidget(_currTable, _currRow, _currCol),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ControlButton extends StatelessWidget {
-  ControlButton(this._iconPath, this._onPressed);
-
-  final Function _onPressed;
-  final String _iconPath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 70,
-      padding: const EdgeInsets.all(8.0),
-      child: RaisedButton(
-        shape: CircleBorder(
-          side: BorderSide(
-            width: 2,
-            color: Theme.of(context).textTheme.button.color,
-          ),
-        ),
-        color: Colors.white,
-        child: Image.asset(
-          _iconPath,
-          scale: 15,
-          color: Theme.of(context).iconTheme.color,
-        ),
-        onPressed: _onPressed,
       ),
     );
   }

@@ -26,15 +26,6 @@ class TrainingHistoryDetailsScreen extends StatelessWidget {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Image.asset(
-              'assets/icons/share.png',
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Container(
         width: double.infinity,
