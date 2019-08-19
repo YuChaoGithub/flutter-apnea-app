@@ -1,9 +1,25 @@
 # Todo
-* Settings:
-  - Dark mode.
-  - Prepare time.
-  - Voice Over.
+* Voice Over
+  - Prepare
+  - Hold
+  - Breathe
+  - Paused
+  - Resumed
+  - Session Complete
+* Inspiration
+  - You can do it!
+  - A few more seconds and you'll be god!
+  - Go go go!
+  - An apnea training a day, keeps the doctor away.
+  - Imagine you're a jelly fish, floating in the deep blue sea.
+  - Just...one more second.
+  - Don't give up, never let down.
+  - I am feeling very warm right now.
+  - Just nod if you can hear me.
+  - Hold on, hold on a sec.
 * Animations.
+  - Sink current scaffold when switching by drawer.
+  - Hero transition (ListTile <-> Appbar) in Train/Test History Screen.
 * Google Admobs.
 
 # Build Log
@@ -54,3 +70,7 @@
 ## 2018.08.18
 * Completed Breath Hold Test Screen.
 * Completed Breath Hold Test History Screen.
+
+## 2018.08.19
+* Completed the avatars of Training Screen and Breath Hold Test Screen.
+* Completed Settings Screen.

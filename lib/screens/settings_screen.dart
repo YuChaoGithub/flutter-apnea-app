@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/drawer_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings-screen';
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +21,12 @@ class SettingsScreen extends StatelessWidget {
       drawer: DrawerWidget(),
       body: ListView(
         children: <Widget>[
-          SettingsListTile(title: 'Prepare Time'),
+          const SizedBox(height: 10),
           SettingsListTile(
-            title: 'Vibration',
-            trailing: Switch(
-              value: true,
-              onChanged: (value) {},
-            ),
+            title: 'Support Website',
+            tapAction: () =>
+                _launchURL('http://shinerightstudio.com/apnea-app'),
           ),
-          SettingsListTile(
-            title: 'Speech',
-            trailing: Switch(
-              value: true,
-              onChanged: (value) {},
-            ),
-          ),
-          SettingsListTile(title: 'References', tapAction: () {}),
-          SettingsListTile(title: 'Contact', tapAction: () {}),
           ListTile(
             title: const Text(
               'Version: 0.1',

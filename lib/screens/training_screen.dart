@@ -13,7 +13,6 @@ import '../widgets/drawer_widget.dart';
 import './customize_tables_screen.dart';
 import './training_history_screen.dart';
 import '../providers/training_table_provider.dart';
-import '../providers/settings_provider.dart';
 import '../providers/training_history_provider.dart';
 
 class TrainingScreen extends StatefulWidget {
@@ -25,6 +24,7 @@ class TrainingScreen extends StatefulWidget {
 
 class _TrainingScreenState extends State<TrainingScreen> {
   static const _timerDelay = Duration(microseconds: 1);
+  static const _prepareTime = Duration(seconds: 5);
   TrainingTable _currTable = TrainingTableProvider.defaultTable;
   int _currRow = -1;
   int _currCol = 1;
@@ -41,7 +41,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
     _currRow = -1;
     _currCol = 1;
     _allContractionTimes = [];
-    _stopwatchGoal = SettingsProvider.prepareTime;
+    _stopwatchGoal = _prepareTime;
     _stopwatch.start();
   }
 
@@ -235,8 +235,23 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 Container(
                   width: 70,
                   height: 70,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).textTheme.title.color,
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
                   child: CircleAvatar(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    child: Image.asset(
+                      !_stopwatch.isRunning || _currRow == -1
+                          ? 'assets/images/prepare.png'
+                          : (_currCol == 0
+                              ? 'assets/images/hold.png'
+                              : 'assets/images/breathe.png'),
+                      color: Theme.of(context).textTheme.title.color,
+                    ),
                   ),
                 ),
                 SizedBox(width: 30),

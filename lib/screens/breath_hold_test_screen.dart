@@ -177,8 +177,21 @@ class _BreathHoldTestScreenState extends State<BreathHoldTestScreen> {
                 Container(
                   width: 70,
                   height: 70,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).textTheme.title.color,
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
                   child: CircleAvatar(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    child: Image.asset(
+                      _stopwatch.isRunning
+                          ? 'assets/images/hold.png'
+                          : 'assets/images/prepare.png',
+                      color: Theme.of(context).textTheme.title.color,
+                    ),
                   ),
                 ),
                 SizedBox(width: 30),

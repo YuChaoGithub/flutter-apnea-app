@@ -25,6 +25,7 @@ dependencies:
   flutter_animation_progress_bar: ^1.0.0
   sqflite: ^1.1.6+3
   path: ^1.6.2
+  url_launcher: ^5.1.2
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +36,7 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/images/
 
   fonts:
     - family: Exo

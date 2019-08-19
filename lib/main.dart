@@ -10,7 +10,6 @@ import './screens/training_table_detail_screen.dart';
 import './screens/training_history_details_screen.dart';
 import './screens/training_history_screen.dart';
 import './providers/breath_hold_history_provider.dart';
-import './providers/settings_provider.dart';
 import './providers/training_history_provider.dart';
 import './providers/training_table_provider.dart';
 
@@ -23,9 +22,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: BreathHoldHistoryProvider(),
-        ),
-        ChangeNotifierProvider.value(
-          value: SettingsProvider(),
         ),
         ChangeNotifierProvider.value(
           value: TrainingHistoryProvider(),
