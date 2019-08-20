@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>856483640717-d5f2p2q16fp2hsldt6m5t16sva5ljd00.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.856483640717-d5f2p2q16fp2hsldt6m5t16sva5ljd00</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAucV9g2rEQjJfw3Dt63LA2KfGq_4u_Z8U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>856483640717</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.apneatrainingapp.ios</string>
+	<key>PROJECT_ID</key>
+	<string>apnea-training-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>apnea-training-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<true/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:856483640717:ios:55a22ec15c37f24a</string>
+	<key>DATABASE_URL</key>
+	<string>https://apnea-training-app.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-3679599074148025~7611447897</string>
+</dict>
+</plist>

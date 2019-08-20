@@ -17,10 +17,6 @@
   - I am feeling very warm right now.
   - Just nod if you can hear me.
   - Hold on, hold on a sec.
-* Animations.
-  - Sink current scaffold when switching by drawer.
-  - Hero transition (ListTile <-> Appbar) in Train/Test History Screen.
-* Google Admobs.
 
 # Build Log
 ## 2019.08.07
@@ -74,3 +70,6 @@
 ## 2018.08.19
 * Completed the avatars of Training Screen and Breath Hold Test Screen.
 * Completed Settings Screen.
+
+## 2018.08.20
+* Integrated Admob.
