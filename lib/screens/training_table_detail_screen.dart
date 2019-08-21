@@ -236,7 +236,11 @@ class _TrainingTableDetailScreenState extends State<TrainingTableDetailScreen> {
               ),
               SizedBox(height: 25),
               TrainingTableInputWidget(
-                  _totalTableRows, _tableChanged, _editedForm.table),
+                _totalTableRows,
+                _tableChanged,
+                _editedForm.table,
+              ),
+              SizedBox(height: 100),
             ],
           ),
         ),

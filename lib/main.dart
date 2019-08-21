@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
@@ -36,6 +37,8 @@ BannerAd banner = BannerAd(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     FirebaseAdMob.instance.initialize(
       appId: Platform.isAndroid
           ? "ca-app-pub-3679599074148025~5201988542"

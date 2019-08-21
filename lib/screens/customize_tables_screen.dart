@@ -45,7 +45,7 @@ class CustomizeTableScreen extends StatelessWidget {
             : Consumer<TrainingTableProvider>(
                 builder: (ctx, provider, ch) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 15),
+                    padding: const EdgeInsets.only(top: 15, bottom: 80),
                     child: ListView(
                       children:
                           List<Column>.generate(provider.tablesLength, (i) {

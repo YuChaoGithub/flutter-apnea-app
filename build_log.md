@@ -73,3 +73,7 @@
 
 ## 2018.08.20
 * Integrated Admob.
+
+## 2018.08.21
+* Recorded and added voice overs.
+* Configure the app for release.

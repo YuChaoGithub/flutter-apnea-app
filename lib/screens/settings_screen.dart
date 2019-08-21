@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           ListTile(
             title: const Text(
-              'Version: 0.1',
+              'Version: 1.0',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),

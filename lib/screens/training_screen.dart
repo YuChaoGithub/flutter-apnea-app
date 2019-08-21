@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ import '../providers/training_history_provider.dart';
 
 class TrainingScreen extends StatefulWidget {
   static const routeName = '/training';
+  final AudioCache audioCache = AudioCache(prefix: 'audio/');
 
   @override
   _TrainingScreenState createState() => _TrainingScreenState();
@@ -38,6 +40,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
   List<MinuteSecond> _allContractionTimes;
 
   void _startTimer() {
+    widget.audioCache.play('prepare.wav');
     _currRow = -1;
     _currCol = 1;
     _allContractionTimes = [];
@@ -46,11 +49,13 @@ class _TrainingScreenState extends State<TrainingScreen> {
   }
 
   void _pauseTimer() {
+    widget.audioCache.play('paused.wav');
     _paused = true;
     _stopwatch.stop();
   }
 
   void _resumeTimer() {
+    widget.audioCache.play('resumed.wav');
     _paused = false;
     _stopwatch.start();
   }
@@ -59,6 +64,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
     final MinuteSecond goal = _currCol == 0
         ? _currTable.table[_currRow].holdTime
         : _currTable.table[_currRow].breatheTime;
+    widget.audioCache.play(_currCol == 0 ? 'hold.wav' : 'breathe.wav');
     _stopwatchGoal = Duration(minutes: goal.minute, seconds: goal.second);
     _stopwatch.start();
   }
@@ -84,6 +90,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
       });
     } else {
       _terminateSession();
+      widget.audioCache.play('session_complete.wav');
       showDialog(
         context: context,
         builder: (ctx) {
@@ -154,6 +161,16 @@ class _TrainingScreenState extends State<TrainingScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Load audio.
+    widget.audioCache.loadAll([
+      'prepare.wav',
+      'breathe.wav',
+      'hold.wav',
+      'paused.wav',
+      'resumed.wav',
+      'session_complete.wav',
+    ]);
 
     fetchFuture = Provider.of<TrainingTableProvider>(context, listen: false)
         .fetchAndSetTable();
@@ -336,6 +353,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
             ),
             SizedBox(height: 20),
             TrainingTableWidget(_currTable, _currRow, _currCol),
+            SizedBox(height: 80),
           ],
         ),
       ),
