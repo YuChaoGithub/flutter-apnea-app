@@ -77,3 +77,4 @@
 ## 2018.08.21
 * Recorded and added voice overs.
 * Configure the app for release.
+* Added some useless inspiring quotes.

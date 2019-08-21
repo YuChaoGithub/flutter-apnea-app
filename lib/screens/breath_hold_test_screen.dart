@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:apnea/widgets/inspire_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -195,13 +196,7 @@ class _BreathHoldTestScreenState extends State<BreathHoldTestScreen> {
                   ),
                 ),
                 SizedBox(width: 30),
-                IconButton(
-                  icon: Image.asset(
-                    'assets/icons/inspire.png',
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  onPressed: () {},
-                ),
+                InspireButton(),
               ],
             ),
             SizedBox(height: 10),

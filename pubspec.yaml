@@ -46,6 +46,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/audio/
+    - assets/audio/inspire/
 
   fonts:
     - family: Exo

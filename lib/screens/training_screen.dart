@@ -15,6 +15,7 @@ import './customize_tables_screen.dart';
 import './training_history_screen.dart';
 import '../providers/training_table_provider.dart';
 import '../providers/training_history_provider.dart';
+import '../widgets/inspire_button.dart';
 
 class TrainingScreen extends StatefulWidget {
   static const routeName = '/training';
@@ -272,13 +273,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   ),
                 ),
                 SizedBox(width: 30),
-                IconButton(
-                  icon: Image.asset(
-                    'assets/icons/inspire.png',
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  onPressed: () {},
-                ),
+                InspireButton(),
               ],
             ),
             SizedBox(height: 10),
