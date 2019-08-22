@@ -78,3 +78,6 @@
 * Recorded and added voice overs.
 * Configure the app for release.
 * Added some useless inspiring quotes.
+
+## 2018.08.22 [Ver. 1.0]
+* Published on Android Playe Store and iOS App Store. (iOS build: 1, Android build: 1)
